@@ -3,11 +3,9 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const app = express();
 
-// Middleware to parse URL-encoded data and JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// MongoDB connection
 const mongoURI = 'mongodb+srv://clubembersmasterdbuser:73CHYW3M0bil3C8APP@dev-clubembers-mongo-db.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
 
 mongoose
@@ -15,7 +13,6 @@ mongoose
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 
-// Define schema
 const TransactionSchema = new mongoose.Schema({
     TransactionType: Number,
     Approved: Boolean,
@@ -31,10 +28,8 @@ const TransactionSchema = new mongoose.Schema({
     SpiToken: String,
 });
 
-// Create a model
 const Transaction = mongoose.model('Transaction', TransactionSchema);
 
-// Endpoint to save transaction data
 app.post('/endpoint', async (req, res) => {
     try {
         const responseEncoded = req.body.Response || req.query.Response;
@@ -66,7 +61,6 @@ app.post('/registerSale', async (req, res) => {
 
         const { SpiToken, Response } = req.body;
 
-        // Parse the Response string into an object
         const parsedResponse = JSON.parse(Response);
         const { RiskManagement } = parsedResponse;
 
@@ -80,7 +74,6 @@ app.post('/registerSale', async (req, res) => {
         const authStatus = RiskManagement?.ThreeDSecure?.AuthenticationStatus;
 
         if (authStatus === 'Y') {
-            // Make external API call
             const response = await axios.post(
                 'https://staging.ptranz.com/api/spi/payment',
                 `"${SpiToken}"`,
