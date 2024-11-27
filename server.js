@@ -130,7 +130,7 @@ app.get('/search', async (req, res) => {
 });
 
 // Start the server
-const port = process.env.port || 8080;
+const PORT = process.env.port || 3021;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
