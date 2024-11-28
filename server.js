@@ -119,11 +119,20 @@ app.post('/registerSale', async (req, res) => {
 
         if (!RiskManagement || !SpiToken) {
             return res.status(400).send(`
-                <html>
-                    <body>
-                        <h1>Error</h1>
-                        <p>RiskManagement and SpiToken are required</p>
-                    </body>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <title>Error</title>
+                </head>
+                <body class="bg-gray-100 flex items-center justify-center h-screen">
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-md">
+                        <h1 class="text-2xl font-bold text-red-600 mb-4">Error</h1>
+                        <p class="text-gray-600">RiskManagement and SpiToken are required</p>
+                    </div>
+                </body>
                 </html>
             `);
         }
@@ -144,39 +153,67 @@ app.post('/registerSale', async (req, res) => {
             );
 
             return res.status(200).send(`
-                <html>
-                    <body>
-                        <h1>Success</h1>
-                        <p>AuthenticationStatus is "Y". External API called successfully.</p>
-                        <h2>API Response:</h2>
-                        <pre>${JSON.stringify(response.data, null, 2)}</pre>
-                    </body>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <title>Success</title>
+                </head>
+                <body class="bg-gray-100 flex items-center justify-center h-screen">
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-md">
+                        <h1 class="text-2xl font-bold text-green-600 mb-4">Success</h1>
+                        <p class="text-gray-600 mb-4">AuthenticationStatus is "Y". External API called successfully.</p>
+                        <h2 class="text-lg font-semibold mb-2">API Response:</h2>
+                        <pre class="bg-gray-100 p-4 rounded-lg text-sm text-gray-800 overflow-auto">${JSON.stringify(response.data, null, 2)}</pre>
+                    </div>
+                </body>
                 </html>
             `);
         } else {
             return res.status(200).send(`
-                <html>
-                    <body>
-                        <h1>Not Processed</h1>
-                        <p>AuthenticationStatus is not "Y". No external API call made.</p>
-                    </body>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <title>Not Processed</title>
+                </head>
+                <body class="bg-gray-100 flex items-center justify-center h-screen">
+                    <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-md">
+                        <h1 class="text-2xl font-bold text-yellow-600 mb-4">Not Processed</h1>
+                        <p class="text-gray-600">AuthenticationStatus is not "Y". No external API call made.</p>
+                    </div>
+                </body>
                 </html>
             `);
         }
     } catch (error) {
         console.error('Error in registerSale:', error.response?.data || error.message);
         return res.status(500).send(`
-            <html>
-                <body>
-                    <h1>Error</h1>
-                    <p>Failed to process transaction or call external API</p>
-                    <h2>Details:</h2>
-                    <pre>${error.response?.data || error.message}</pre>
-                </body>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <script src="https://cdn.tailwindcss.com"></script>
+                <title>Error</title>
+            </head>
+            <body class="bg-gray-100 flex items-center justify-center h-screen">
+                <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-md">
+                    <h1 class="text-2xl font-bold text-red-600 mb-4">Error</h1>
+                    <p class="text-gray-600 mb-4">Failed to process transaction or call external API</p>
+                    <h2 class="text-lg font-semibold mb-2">Details:</h2>
+                    <pre class="bg-gray-100 p-4 rounded-lg text-sm text-gray-800 overflow-auto">${error.response?.data || error.message}</pre>
+                </div>
+            </body>
             </html>
         `);
     }
 });
+
 
 
 
