@@ -30,7 +30,7 @@ const TransactionSchema = new mongoose.Schema({
 
 const Transaction = mongoose.model('Transaction', TransactionSchema);
 
-app.post('/endpoint', async (req, res) => {
+app.post('/saveSale', async (req, res) => {
     try {
         const responseEncoded = req.body.Response || req.query.Response;
         if (!responseEncoded) {
@@ -55,6 +55,56 @@ app.post('/endpoint', async (req, res) => {
 
 
 
+// app.post('/registerSale', async (req, res) => {
+//     try {
+//         console.log(req.body);
+
+//         const { SpiToken, Response } = req.body;
+
+//         const parsedResponse = JSON.parse(Response);
+//         const { RiskManagement } = parsedResponse;
+
+//         console.log(SpiToken);
+//         console.log(RiskManagement);
+
+//         if (!RiskManagement || !SpiToken) {
+//             return res.status(400).send({ error: 'RiskManagement and SpiToken are required' });
+//         }
+
+//         const authStatus = RiskManagement?.ThreeDSecure?.AuthenticationStatus;
+
+//         if (authStatus === 'Y') {
+//             const response = await axios.post(
+//                 'https://staging.ptranz.com/api/spi/payment',
+//                 `"${SpiToken}"`,
+//                 {
+//                     headers: {
+//                         'PowerTranz-PowerTranzId': '77700583',
+//                         'PowerTranz-PowerTranzPassword': 'xhvIG9dodJe7KdzumheCvuBcgyk7Ecqzp6Sj6cMgXb4zu4oxVcoE15',
+//                         'Content-Type': 'application/json',
+//                     },
+//                 }
+//             );
+
+//             res.status(200).send({
+//                 message: 'AuthenticationStatus is "Y", external API called successfully',
+//                 apiResponse: response.data,
+//             });
+//         } else {
+//             res.status(200).send({
+//                 message: 'AuthenticationStatus is not "Y", no external API call made',
+//             });
+//         }
+//     } catch (error) {
+//         console.error('Error in registerSale:', error.response?.data || error.message);
+//         res.status(500).send({
+//             error: 'Failed to process transaction or call external API',
+//             details: error.response?.data || error.message,
+//         });
+//     }
+// });
+
+
 app.post('/registerSale', async (req, res) => {
     try {
         console.log(req.body);
@@ -68,7 +118,14 @@ app.post('/registerSale', async (req, res) => {
         console.log(RiskManagement);
 
         if (!RiskManagement || !SpiToken) {
-            return res.status(400).send({ error: 'RiskManagement and SpiToken are required' });
+            return res.status(400).send(`
+                <html>
+                    <body>
+                        <h1>Error</h1>
+                        <p>RiskManagement and SpiToken are required</p>
+                    </body>
+                </html>
+            `);
         }
 
         const authStatus = RiskManagement?.ThreeDSecure?.AuthenticationStatus;
@@ -86,23 +143,41 @@ app.post('/registerSale', async (req, res) => {
                 }
             );
 
-            res.status(200).send({
-                message: 'AuthenticationStatus is "Y", external API called successfully',
-                apiResponse: response.data,
-            });
+            return res.status(200).send(`
+                <html>
+                    <body>
+                        <h1>Success</h1>
+                        <p>AuthenticationStatus is "Y". External API called successfully.</p>
+                        <h2>API Response:</h2>
+                        <pre>${JSON.stringify(response.data, null, 2)}</pre>
+                    </body>
+                </html>
+            `);
         } else {
-            res.status(200).send({
-                message: 'AuthenticationStatus is not "Y", no external API call made',
-            });
+            return res.status(200).send(`
+                <html>
+                    <body>
+                        <h1>Not Processed</h1>
+                        <p>AuthenticationStatus is not "Y". No external API call made.</p>
+                    </body>
+                </html>
+            `);
         }
     } catch (error) {
         console.error('Error in registerSale:', error.response?.data || error.message);
-        res.status(500).send({
-            error: 'Failed to process transaction or call external API',
-            details: error.response?.data || error.message,
-        });
+        return res.status(500).send(`
+            <html>
+                <body>
+                    <h1>Error</h1>
+                    <p>Failed to process transaction or call external API</p>
+                    <h2>Details:</h2>
+                    <pre>${error.response?.data || error.message}</pre>
+                </body>
+            </html>
+        `);
     }
 });
+
 
 
 // Endpoint to search by TransactionIdentifier
