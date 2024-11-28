@@ -163,10 +163,9 @@ app.post('/registerSale', async (req, res) => {
                 </head>
                 <body class="bg-gray-100 flex items-center justify-center h-screen">
                     <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-md">
-                        <h1 class="text-2xl font-bold text-green-600 mb-4">Success</h1>
-                        <p class="text-gray-600 mb-4">AuthenticationStatus is "Y". External API called successfully.</p>
-                        <h2 class="text-lg font-semibold mb-2">API Response:</h2>
-                        <pre class="bg-gray-100 p-4 rounded-lg text-sm text-gray-800 overflow-auto">${JSON.stringify(response.data, null, 2)}</pre>
+                        <h1 class="text-2xl font-bold text-green-600 mb-4">Exito</h1>
+                        <p class="text-gray-600 mb-4">Pago relizado exitosamente.</p>
+                    
                     </div>
                 </body>
                 </html>
