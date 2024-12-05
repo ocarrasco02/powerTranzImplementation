@@ -151,7 +151,13 @@ app.post('/registerSale', async (req, res) => {
                     },
                 }
             );
+            const transactionData = {
+                ...parsedResponse,
+                SpiToken,
+            };
 
+            const transaction = new Transaction(transactionData);
+            await transaction.save();
             return res.status(200).send(`
                 <!DOCTYPE html>
                 <html lang="en">
